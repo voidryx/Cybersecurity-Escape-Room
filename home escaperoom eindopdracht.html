@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Cybersecurity Escape Room van Gilde Opleidingen">
+	<link rel="stylesheet" href="home escaperoom eindopdracht.css">
+	<title>Cybersecurity Escape Room</title>
+</head>
+<body>
+	<div class="scanline" aria-hidden="true"></div>
+	<header class="topbar">
+		<a class="brand" href="#top">CYBER<span>SECURITY</span></a>
+		<div class="alarm-status"><i></i> ALARM ACTIEF</div>
+		<div class="timer-wrap"><small>LOCKDOWN OVER</small><strong id="timer">07:00</strong></div>
+	</header>
+
+	<main id="top">
+		<section class="story-panel">
+			<p class="kicker">// GILDE OPLEIDINGEN / ICT-LOKAAL</p>
+			<h1>Het systeem<br><em>is gehackt.</em></h1>
+			<div class="red-line"></div>
+			<p class="story">Jullie komen aan in een ICT-lokaal. Zodra jullie binnen zijn, gaat plotseling het licht op rood. Een onbekende hacker heeft het systeem overgenomen. De beveiliging is uitgeschakeld en de deur kan alleen weer worden geopend als het systeem wordt hersteld.</p>
+			<p class="story highlight">Jullie hebben 7 minuten voordat het systeem zichzelf definitief vergrendelt.</p>
+			<div class="terminal-note">Herstel alle beveiligingslagen.<br>Schuif ze in de juiste volgorde.</div>
+		</section>
+
+		<section class="code-panel" aria-labelledby="codes-title">
+			<div class="panel-heading">
+				<div><p class="kicker">// SYSTEM RECOVERY</p><h2 id="codes-title">Herstel de toegang</h2></div>
+				<div class="lock-icon" aria-hidden="true">&#9632;</div>
+			</div>
+			<p class="instruction">Zet de blokken waar je wilt en activeer het systeem om de volgorde te testen.</p>
+
+			<form id="code-form">
+				<div class="code-grid" id="layer-bank" aria-label="Beschikbare beveiligingslagen">
+					<button class="code-slot" type="button" draggable="true" data-layer="password"><span><b>01</b> BEVEILIGINGSLAAG</span><strong>🔑 Wachtwoord</strong></button>
+					<button class="code-slot" type="button" draggable="true" data-layer="firewall"><span><b>02</b> BEVEILIGINGSLAAG</span><strong>🧱 Firewall</strong></button>
+					<button class="code-slot" type="button" draggable="true" data-layer="antivirus"><span><b>03</b> BEVEILIGINGSLAAG</span><strong>🛡️ Antivirus</strong></button>
+					<button class="code-slot" type="button" draggable="true" data-layer="authentication"><span><b>04</b> BEVEILIGINGSLAAG</span><strong>👤 Authenticatie</strong></button>
+					<button class="code-slot" type="button" draggable="true" data-layer="backup"><span><b>05</b> BEVEILIGINGSLAAG</span><strong>💾 Back-up</strong></button>
+				</div>
+				<div class="order-grid" id="order-grid" aria-label="Volgorde van de beveiligingslagen">
+					<div class="order-slot" data-position="0"><b>01</b><span>Sleep hierheen</span></div>
+					<div class="order-slot" data-position="1"><b>02</b><span>Sleep hierheen</span></div>
+					<div class="order-slot" data-position="2"><b>03</b><span>Sleep hierheen</span></div>
+					<div class="order-slot" data-position="3"><b>04</b><span>Sleep hierheen</span></div>
+					<div class="order-slot" data-position="4"><b>05</b><span>Sleep hierheen</span></div>
+				</div>
+				<button type="submit">SYSTEEM ACTIVEREN <span aria-hidden="true">-&gt;</span></button>
+				<p id="form-message" class="form-message" aria-live="polite"></p>
+			</form>
+			<div class="progress-label"><span>HERSTELPROGRESSIE</span><span id="progress-count">0 / 5 LAGEN</span></div>
+			<div class="progress-bar"><span id="progress-bar-fill"></span></div>
+		</section>
+	</main>
+
+	<footer><span>CYBERSECURITY ESCAPE ROOM</span><span>CONNECTION: <b>UNSTABLE</b></span></footer>
+
+	<script>
+		const form = document.getElementById("code-form");
+		const layers = form.querySelectorAll(".code-slot");
+		const orderSlots = form.querySelectorAll(".order-slot");
+		const message = document.getElementById("form-message");
+		const progressCount = document.getElementById("progress-count");
+		const progressFill = document.getElementById("progress-bar-fill");
+		const timerElement = document.getElementById("timer");
+		const layerBank = document.getElementById("layer-bank");
+		const correctOrder = ["password", "authentication", "firewall", "antivirus", "backup"];
+		let draggedLayer = "";
+		let draggedFrom = null;
+		const totalSeconds = 420;
+		const storedStartTime = Number(sessionStorage.getItem("escapeRoomStartTime"));
+		let secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : totalSeconds;
+		let timer;
+
+		function updateProgress() {
+			const placedLayers = form.querySelectorAll(".order-slot .code-slot").length;
+			progressCount.textContent = placedLayers + " / 5 LAGEN";
+			progressFill.style.width = (placedLayers * 20) + "%";
+		}
+
+		for (let i = 0; i < layers.length; i++) {
+			layers[i].addEventListener("dragstart", function () {
+				draggedLayer = layers[i].dataset.layer;
+				draggedFrom = layers[i].parentElement;
+				layers[i].classList.add("dragging");
+			});
+			layers[i].addEventListener("dragend", function () {
+				layers[i].classList.remove("dragging");
+			});
+		}
+
+		layerBank.addEventListener("dragover", function (event) {
+			event.preventDefault();
+		});
+		layerBank.addEventListener("drop", function (event) {
+			event.preventDefault();
+			const layer = form.querySelector('[data-layer="' + draggedLayer + '"]');
+			if (layer && layerBank !== layer.parentElement) {
+				layerBank.appendChild(layer);
+				if (draggedFrom && draggedFrom.classList.contains("order-slot")) {
+					draggedFrom.classList.remove("filled", "correct", "incorrect");
+					draggedFrom.querySelector("span").textContent = "Sleep hierheen";
+				}
+				updateProgress();
+			}
+			draggedLayer = "";
+			draggedFrom = null;
+		});
+
+		for (let i = 0; i < orderSlots.length; i++) {
+			orderSlots[i].addEventListener("dragover", function (event) {
+				event.preventDefault();
+			});
+			orderSlots[i].addEventListener("drop", function (event) {
+				event.preventDefault();
+				const layer = form.querySelector('[data-layer="' + draggedLayer + '"]');
+
+				if (!layer || orderSlots[i].querySelector(".code-slot")) {
+					message.textContent = "Dit vak is al bezet. Kies een ander vak.";
+					message.className = "form-message error";
+					draggedLayer = "";
+					return;
+				}
+
+				if (draggedFrom && draggedFrom.classList.contains("order-slot") && draggedFrom !== orderSlots[i]) {
+					draggedFrom.classList.remove("filled", "correct", "incorrect");
+					draggedFrom.querySelector("span").textContent = "Sleep hierheen";
+				}
+				orderSlots[i].appendChild(layer);
+				orderSlots[i].classList.add("filled");
+				orderSlots[i].classList.remove("correct", "incorrect");
+				orderSlots[i].querySelector("span").textContent = layer.querySelector("strong").textContent;
+				draggedLayer = "";
+				draggedFrom = null;
+				updateProgress();
+			});
+		}
+
+		form.addEventListener("submit", function (event) {
+			event.preventDefault();
+			const placedLayers = form.querySelectorAll(".order-slot .code-slot");
+			const placedOrder = [];
+
+			for (let i = 0; i < placedLayers.length; i++) {
+				placedOrder.push(placedLayers[i].dataset.layer);
+			}
+
+			if (placedOrder.length !== correctOrder.length) {
+				message.textContent = "Plaats eerst alle vijf blokken in de volgordevakken.";
+				message.className = "form-message error";
+				return;
+			}
+
+			let isCorrect = true;
+			for (let i = 0; i < correctOrder.length; i++) {
+				if (placedOrder[i] !== correctOrder[i]) isCorrect = false;
+			}
+
+			if (isCorrect) {
+				clearInterval(timer);
+				message.textContent = "Juiste volgorde. Alle beveiligingslagen hersteld.";
+				message.className = "form-message success";
+				for (let i = 0; i < orderSlots.length; i++) orderSlots[i].classList.add("correct");
+			} else {
+				for (let i = 0; i < orderSlots.length; i++) {
+					const layer = orderSlots[i].querySelector(".code-slot");
+					if (layer) layerBank.appendChild(layer);
+					orderSlots[i].classList.remove("filled", "correct", "incorrect");
+					orderSlots[i].querySelector("span").textContent = "Sleep hierheen";
+				}
+				updateProgress();
+				message.textContent = "Verkeerde volgorde. Alle blokken zijn teruggezet.";
+				message.className = "form-message error";
+			}
+		});
+
+		function updateTimer() {
+			secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : 0;
+			let minutes = Math.floor(secondsLeft / 60);
+			let seconds = secondsLeft % 60;
+
+			if (minutes < 10) minutes = "0" + minutes;
+			if (seconds < 10) seconds = "0" + seconds;
+			timerElement.textContent = minutes + ":" + seconds;
+			if (secondsLeft <= 0) {
+				clearInterval(timer);
+				message.textContent = "LOCKDOWN ACTIEF. Het systeem is vergrendeld.";
+				message.className = "form-message error";
+			}
+		}
+
+		updateTimer();
+		if (secondsLeft > 0) timer = setInterval(updateTimer, 1000);
+	</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Toegangscode voor de Cybersecurity Escape Room">
+	<link rel="stylesheet" href="toegang.css">
+	<title>Toegangscode | Cybersecurity Escape Room</title>
+</head>
+<body>
+	<div class="scanline" aria-hidden="true"></div>
+
+	<main class="access-screen">
+		<div class="access-topbar">
+			<p class="brand">CYBERSECURITY ESCAPE ROOM</p>
+			<div class="timer-wrap"><small>LOCKDOWN OVER</small><strong id="timer">07:00</strong></div>
+		</div>
+		<p class="status"><i></i> BEVEILIGDE TOEGANG</p>
+
+		<section class="access-panel" aria-labelledby="access-title">
+			<p class="kicker">// SECURITY CHECKPOINT 01</p>
+			<h1 id="access-title">Voer de drie<br><em>codes in.</em></h1>
+			<div class="red-line"></div>
+			<p class="instruction">De eerste beveiligingslaag is actief. Voer de drie gevonden codes in om toegang te krijgen tot het herstelprotocol.</p>
+
+			<form id="access-form" novalidate>
+				<div class="code-fields">
+					<label for="code-1"><span>CODE 01</span><input id="code-1" name="code-1" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
+					<label for="code-2"><span>CODE 02</span><input id="code-2" name="code-2" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
+					<label for="code-3"><span>CODE 03</span><input id="code-3" name="code-3" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
+				</div>
+				<button type="submit">CODES CONTROLEREN <span aria-hidden="true">-&gt;</span></button>
+				<p id="form-message" class="form-message" aria-live="polite"></p>
+			</form>
+		</section>
+	</main>
+
+	<footer>GILDE OPLEIDINGEN // SECURE ACCESS // CHECKPOINT 01</footer>
+
+	<script>
+		const correctCodes = ["Phishing", "cybersecurity", "hacking"];
+		const form = document.getElementById("access-form");
+		const fields = form.querySelectorAll("input");
+		const message = document.getElementById("form-message");
+		const timerElement = document.getElementById("timer");
+		const totalSeconds = 420;
+		const storedStartTime = Number(sessionStorage.getItem("escapeRoomStartTime"));
+		let timer;
+
+		function updateTimer() {
+			const secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : totalSeconds;
+			let minutes = Math.floor(secondsLeft / 60);
+			let seconds = secondsLeft % 60;
+
+			if (minutes < 10) minutes = "0" + minutes;
+			if (seconds < 10) seconds = "0" + seconds;
+			timerElement.textContent = minutes + ":" + seconds;
+
+			if (secondsLeft <= 0) {
+				clearInterval(timer);
+				message.textContent = "LOCKDOWN ACTIEF. Het systeem is vergrendeld.";
+				message.className = "form-message error";
+			}
+		}
+
+		updateTimer();
+		if (storedStartTime) timer = setInterval(updateTimer, 1000);
+
+		form.addEventListener("submit", function (event) {
+			event.preventDefault();
+			let isCorrect = true;
+
+			for (let i = 0; i < fields.length; i++) {
+				const isFieldCorrect = fields[i].value.trim().toLowerCase() === correctCodes[i].toLowerCase();
+				fields[i].classList.toggle("incorrect", !isFieldCorrect);
+				if (!isFieldCorrect) isCorrect = false;
+			}
+
+			if (isCorrect) {
+				message.textContent = "Toegang verleend. Herstelprotocol wordt geladen.";
+				message.className = "form-message success";
+				setTimeout(function () {
+					window.location.href = "home escaperoom eindopdracht.html";
+				}, 650);
+			} else {
+				message.textContent = "Een of meer codes zijn onjuist. Controleer de invoer.";
+				message.className = "form-message error";
+				for (let i = 0; i < fields.length; i++) {
+					if (fields[i].classList.contains("incorrect")) {
+						fields[i].focus();
+						break;
+					}
+				}
+			}
+		});
+
+		for (let i = 0; i < fields.length; i++) {
+			fields[i].addEventListener("input", function () {
+				fields[i].value = fields[i].value.slice(0, 20);
+				fields[i].classList.remove("incorrect");
+				message.textContent = "";
+				message.className = "form-message";
+			});
+		}
+	</script>
+</body>
+</html>
