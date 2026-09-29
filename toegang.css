@@ -29,8 +29,8 @@ body {
 .scanline { animation: scan 6s linear infinite; background: rgba(255, 75, 75, .08); height: 2px; left: 0; pointer-events: none; position: fixed; right: 0; top: 0; z-index: 10; }
 @keyframes scan { from { transform: translateY(-10px); } to { transform: translateY(100vh); } }
 
-.access-screen { max-width: 720px; width: 100%; }
-.access-topbar { align-items: flex-start; display: flex; justify-content: space-between; }
+.access-screen { max-width: 720px; padding-top: 72px; width: 100%; }
+.access-topbar { align-items: flex-start; background: var(--black); display: flex; justify-content: space-between; left: 50%; max-width: 720px; padding: 18px 0; position: fixed; top: 0; transform: translateX(-50%); width: calc(100% - 60px); z-index: 20; }
 .brand, .status, footer { font-family: monospace; letter-spacing: .12em; }
 .brand { font-size: .8rem; font-weight: bold; }
 .timer-wrap { align-items: flex-end; display: flex; flex-direction: column; }
@@ -58,7 +58,7 @@ footer { bottom: 25px; color: var(--muted); font-size: .6rem; left: 0; position:
 
 @media (max-width: 560px) {
 	body { padding: 20px; }
-	.access-topbar { align-items: center; }
+	.access-topbar { align-items: center; width: calc(100% - 40px); }
 	.access-panel { margin-top: 27px; padding: 25px 20px; }
 	.code-fields { grid-template-columns: 1fr; }
 	input { font-size: 1.5rem; padding: 11px; }

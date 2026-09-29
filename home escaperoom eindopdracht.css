@@ -26,7 +26,7 @@ body {
 @keyframes scan { from { transform: translateY(-10px); } to { transform: translateY(100vh); } }
 
 .topbar, main, footer { margin: auto; max-width: 1280px; }
-.topbar { align-items: center; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; padding: 24px 36px; }
+.topbar { align-items: center; background: var(--black); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; left: 50%; padding: 24px 36px; position: fixed; top: 0; transform: translateX(-50%); width: 100%; z-index: 20; }
 .brand { color: var(--white); font-family: monospace; font-size: .85rem; font-weight: bold; letter-spacing: .12em; }.brand span { color: var(--green); }.brand-symbol { color: var(--red) !important; font-size: 1.1rem; margin-right: 10px; }
 .alarm-status { color: var(--red); font-family: monospace; font-size: .7rem; letter-spacing: .12em; }.alarm-status i { background: var(--red); border-radius: 50%; box-shadow: 0 0 12px var(--red); display: inline-block; height: 7px; margin-right: 8px; width: 7px; }
 .timer-wrap { align-items: flex-end; display: flex; flex-direction: column; }.timer-wrap small { color: var(--muted); font: .58rem monospace; letter-spacing: .1em; }.timer-wrap strong { color: var(--red); font: 700 1.35rem monospace; letter-spacing: .08em; }
@@ -41,4 +41,4 @@ button { background: var(--red); border: 0; color: #160707; cursor: pointer; fon
 footer { border-top: 1px solid var(--line); color: var(--muted); display: flex; font: .62rem monospace; justify-content: space-between; letter-spacing: .1em; padding: 21px 36px; }footer b { color: var(--red); font-weight: normal; }
 
 @media (max-width: 850px) { main { gap: 55px; grid-template-columns: 1fr; padding: 70px 36px; }.story-panel { max-width: 620px; }.code-panel { width: 100%; } }
-@media (max-width: 560px) { .topbar { padding: 20px; }.alarm-status { display: none; }main { padding: 55px 20px; }.story-panel h1 { font-size: 3.35rem; }.code-panel { padding: 23px 18px; }.panel-heading h2 { font-size: 1.65rem; }.code-grid { grid-template-columns: 1fr; }.order-grid { grid-template-columns: 1fr; }.order-slot { min-height: 58px; }footer { padding: 18px 20px; } }
+@media (max-width: 560px) { .topbar { padding: 20px; }.alarm-status { display: none; }main { padding: 80px 20px 55px; }.story-panel h1 { font-size: 3.35rem; }.code-panel { padding: 23px 18px; }.panel-heading h2 { font-size: 1.65rem; }.code-grid { grid-template-columns: 1fr; }.order-grid { grid-template-columns: 1fr; }.order-slot { min-height: 58px; }footer { padding: 18px 20px; } }
