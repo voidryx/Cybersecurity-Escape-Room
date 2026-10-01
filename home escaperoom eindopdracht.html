@@ -17,7 +17,7 @@
 
 	<main id="top">
 		<section class="story-panel">
-			<p class="kicker">// GILDE OPLEIDINGEN / ICT-LOKAAL</p>
+			<p class="kicker">GILDE OPLEIDINGEN / ICT-LOKAAL</p>
 			<h1>Het systeem<br><em>is gehackt.</em></h1>
 			<div class="red-line"></div>
 			<p class="story">Jullie komen aan in een ICT-lokaal. Zodra jullie binnen zijn, gaat plotseling het licht op rood. Een onbekende hacker heeft het systeem overgenomen. De beveiliging is uitgeschakeld en de deur kan alleen weer worden geopend als het systeem wordt hersteld.</p>
@@ -27,7 +27,7 @@
 
 		<section class="code-panel" aria-labelledby="codes-title">
 			<div class="panel-heading">
-				<div><p class="kicker">// SYSTEM RECOVERY</p><h2 id="codes-title">Herstel de toegang</h2></div>
+				<div><p class="kicker">SYSTEM RECOVERY</p><h2 id="codes-title">Herstel de toegang</h2></div>
 				<div class="lock-icon" aria-hidden="true">&#9632;</div>
 			</div>
 			<p class="instruction">Zet de blokken waar je wilt en activeer het systeem om de volgorde te testen.</p>
@@ -160,9 +160,9 @@
 
 			if (isCorrect) {
 				clearInterval(timer);
-				message.textContent = "Juiste volgorde. Alle beveiligingslagen hersteld.";
-				message.className = "form-message success";
-				for (let i = 0; i < orderSlots.length; i++) orderSlots[i].classList.add("correct");
+				const remainingSeconds = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : totalSeconds;
+				sessionStorage.setItem("escapeRoomTimeLeft", remainingSeconds.toString());
+				window.location.href = "eindpagina.html";
 			} else {
 				for (let i = 0; i < orderSlots.length; i++) {
 					const layer = orderSlots[i].querySelector(".code-slot");
@@ -177,7 +177,7 @@
 		});
 
 		function updateTimer() {
-			secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : 0;
+			secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : totalSeconds;
 			let minutes = Math.floor(secondsLeft / 60);
 			let seconds = secondsLeft % 60;
 

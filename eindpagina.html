@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Einde van de Cybersecurity Escape Room">
+	<link rel="stylesheet" href="home escaperoom eindopdracht.css">
+	<title>Systeem hersteld | Cybersecurity Escape Room</title>
+</head>
+<body>
+	<div class="scanline" aria-hidden="true"></div>
+	<header class="topbar">
+		<a class="brand" href="index.html">CYBER<span>SECURITY</span></a>
+		<div class="alarm-status"><i></i> SYSTEEM HERSTELD</div>
+	</header>
+
+	<main>
+		<section class="ending-screen" aria-labelledby="ending-title">
+			<p class="kicker">HERSTELPROTOCOL VOLTOOID</p>
+			<h1 id="ending-title">Jullie zijn<br><em>ontsnapt.</em></h1>
+			<p class="ending-copy">Alle beveiligingslagen zijn hersteld. De deur is weer open.</p>
+			<div class="final-time">
+				<span>TIJD OVER</span>
+				<strong id="final-time">--:--</strong>
+			</div>
+			<audio id="ending-audio" preload="auto"></audio>
+			<button id="play-ending-audio" class="sound-retry" type="button" hidden>GELUID AFSPELEN</button>
+			<a class="start-over" href="index.html">OPNIEUW SPELEN <span aria-hidden="true">-&gt;</span></a>
+		</section>
+	</main>
+
+	<footer><span>CYBERSECURITY ESCAPE ROOM</span><span>CONNECTION: <b>SECURE</b></span></footer>
+
+	<script>
+        // Geluidseffect voor het einde van de escape room
+        //voeg nog een geluid toe
+		const endingSoundUrl = "";
+		const endingAudio = document.getElementById("ending-audio");
+		const playEndingAudioButton = document.getElementById("play-ending-audio");
+
+		if (endingSoundUrl) {
+			endingAudio.src = endingSoundUrl;
+			endingAudio.play().catch(function () {
+				playEndingAudioButton.hidden = false;
+			});
+		}
+
+		playEndingAudioButton.addEventListener("click", function () {
+			endingAudio.play().then(function () {
+				playEndingAudioButton.hidden = true;
+			}).catch(function () {
+				playEndingAudioButton.hidden = false;
+			});
+		});
+
+		const totalSeconds = 420;
+		const storedTimeLeft = sessionStorage.getItem("escapeRoomTimeLeft");
+		const storedStartTime = Number(sessionStorage.getItem("escapeRoomStartTime"));
+		const secondsLeft = storedTimeLeft !== null
+			? Number(storedTimeLeft)
+			: storedStartTime
+				? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000))
+				: totalSeconds;
+		const minutes = Math.floor(secondsLeft / 60).toString().padStart(2, "0");
+		const seconds = (secondsLeft % 60).toString().padStart(2, "0");
+		document.getElementById("final-time").textContent = minutes + ":" + seconds;
+	</script>
+</body>
+</html>
