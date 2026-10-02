@@ -9,6 +9,7 @@
 <body>
 	<div class="scanline" aria-hidden="true"></div>
 
+	<!-- Intro- en startscherm: hier begint het verhaal van de escape room -->
 	<main class="start-screen">
 		<p class="brand">CYBERSECURITY ESCAPE ROOM</p>
 		<p class="status"><i></i> SYSTEEM WACHT OP START</p>
@@ -19,9 +20,11 @@
 
 	<footer>GILDE OPLEIDINGEN | ICT-LOKAAL | SECURE ACCESS</footer>
 
+	<!-- Start van de escape room: tijd en audio worden opgeslagen voor de volgende pagina -->
 	<script>
 		document.getElementById("start-button").addEventListener("click", function () {
 			sessionStorage.setItem("escapeRoomStartTime", Date.now().toString());
+			sessionStorage.setItem("playEscapeRoomStartSound", "true");
 		});
 	</script>
 </body>

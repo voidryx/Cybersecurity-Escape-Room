@@ -1,4 +1,5 @@
 :root {
+	/* Kleurenset en variabelen voor het beveiligingsscherm */
 	--black: #080a0b;
 	--panel: #101416;
 	--panel-light: #171c1e;
@@ -11,6 +12,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Basislay-out en achtergrond voor het toegangsscherm */
 body {
 	align-items: center;
 	background-color: var(--black);
@@ -26,9 +28,11 @@ body {
 	text-align: center;
 }
 
+/* Scanline-effect om de beveiligingsinterface af te werken */
 .scanline { animation: scan 6s linear infinite; background: rgba(255, 75, 75, .08); height: 2px; left: 0; pointer-events: none; position: fixed; right: 0; top: 0; z-index: 10; }
 @keyframes scan { from { transform: translateY(-10px); } to { transform: translateY(100vh); } }
 
+/* Topbar, status en paneel voor de beveiligingscontrole */
 .access-screen { max-width: 720px; padding-top: 72px; width: 100%; }
 .access-topbar { align-items: flex-start; background: var(--black); display: flex; justify-content: space-between; left: 50%; max-width: 720px; padding: 18px 0; position: fixed; top: 0; transform: translateX(-50%); width: calc(100% - 60px); z-index: 20; }
 .brand, .status, footer { font-family: monospace; letter-spacing: .12em; }
@@ -56,6 +60,7 @@ button:hover { box-shadow: 0 0 24px rgba(255, 75, 75, .28); transform: translate
 .form-message.success { color: var(--green); }.form-message.error { color: var(--red); }
 footer { bottom: 25px; color: var(--muted); font-size: .6rem; left: 0; position: absolute; right: 0; }
 
+/* Responsieve weergave voor kleinere schermen */
 @media (max-width: 560px) {
 	body { padding: 20px; }
 	.access-topbar { align-items: center; width: calc(100% - 40px); }

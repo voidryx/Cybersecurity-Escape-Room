@@ -14,6 +14,7 @@
 		<div class="alarm-status"><i></i> SYSTEEM HERSTELD</div>
 	</header>
 
+	<!-- Eindscherm: bevestiging van het gewonnen spel en de resterende tijd -->
 	<main>
 		<section class="ending-screen" aria-labelledby="ending-title">
 			<p class="kicker">HERSTELPROTOCOL VOLTOOID</p>
@@ -31,10 +32,9 @@
 
 	<footer><span>CYBERSECURITY ESCAPE ROOM</span><span>CONNECTION: <b>SECURE</b></span></footer>
 
+	<!-- Audio en eindtijd worden geladen op basis van de opgeslagen spelstatus -->
 	<script>
-        // Geluidseffect voor het einde van de escape room
-        //voeg nog een geluid toe
-		const endingSoundUrl = "";
+		const endingSoundUrl = "emg5991-school-bell-310293.mp3";
 		const endingAudio = document.getElementById("ending-audio");
 		const playEndingAudioButton = document.getElementById("play-ending-audio");
 

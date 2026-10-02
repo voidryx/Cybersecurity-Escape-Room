@@ -10,6 +10,7 @@
 <body>
 	<div class="scanline" aria-hidden="true"></div>
 
+	<!-- Tweede scherm: toegangspunt met timer en beveiligingscontrole -->
 	<main class="access-screen">
 		<div class="access-topbar">
 			<p class="brand">CYBERSECURITY ESCAPE ROOM</p>
@@ -32,20 +33,42 @@
 				<button type="submit">CODES CONTROLEREN <span aria-hidden="true">-&gt;</span></button>
 				<p id="form-message" class="form-message" aria-live="polite"></p>
 			</form>
+			<audio id="start-audio" preload="auto"></audio>
+			<button id="play-start-audio" type="button" hidden>GELUID AFSPELEN</button>
 		</section>
 	</main>
 
 	<footer>GILDE OPLEIDINGEN | SECURE ACCESS | CHECKPOINT 01</footer>
 
+	<!-- Validatie van de toegangscodes en countdown van het lockdown-systeem -->
 	<script>
 		const correctCodes = ["Phishing", "cybersecurity", "hacking"];
 		const form = document.getElementById("access-form");
 		const fields = form.querySelectorAll("input");
 		const message = document.getElementById("form-message");
 		const timerElement = document.getElementById("timer");
+		const startAudio = document.getElementById("start-audio");
+		const playStartAudioButton = document.getElementById("play-start-audio");
 		const totalSeconds = 420;
 		const storedStartTime = Number(sessionStorage.getItem("escapeRoomStartTime"));
+		const shouldPlayStartSound = sessionStorage.getItem("playEscapeRoomStartSound") === "true";
 		let timer;
+
+		if (shouldPlayStartSound) {
+			sessionStorage.removeItem("playEscapeRoomStartSound");
+			startAudio.src = "freesound_community-security-alarm-80493.mp3";
+			startAudio.play().catch(function () {
+				playStartAudioButton.hidden = false;
+			});
+		}
+
+		playStartAudioButton.addEventListener("click", function () {
+			startAudio.play().then(function () {
+				playStartAudioButton.hidden = true;
+			}).catch(function () {
+				playStartAudioButton.hidden = false;
+			});
+		});
 
 		function updateTimer() {
 			const secondsLeft = storedStartTime ? Math.max(0, totalSeconds - Math.floor((Date.now() - storedStartTime) / 1000)) : totalSeconds;
