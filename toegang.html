@@ -20,15 +20,14 @@
 
 		<section class="access-panel" aria-labelledby="access-title">
 			<p class="kicker">SECURITY CHECKPOINT 01</p>
-			<h1 id="access-title">Voer de drie<br><em>codes in.</em></h1>
+			<h1 id="access-title">Voer de twee<br><em>codes in.</em></h1>
 			<div class="red-line"></div>
-			<p class="instruction">De eerste beveiligingslaag is actief. Voer de drie gevonden codes in om toegang te krijgen tot het herstelprotocol.</p>
+			<p class="instruction">De eerste beveiligingslaag is actief. Voer de twee gevonden codes in om toegang te krijgen tot het herstelprotocol.</p>
 
 			<form id="access-form" novalidate>
 				<div class="code-fields">
 					<label for="code-1"><span>CODE 01</span><input id="code-1" name="code-1" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
 					<label for="code-2"><span>CODE 02</span><input id="code-2" name="code-2" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
-					<label for="code-3"><span>CODE 03</span><input id="code-3" name="code-3" type="text" inputmode="text" autocomplete="off" maxlength="20" required></label>
 				</div>
 				<button type="submit">CODES CONTROLEREN <span aria-hidden="true">-&gt;</span></button>
 				<p id="form-message" class="form-message" aria-live="polite"></p>
@@ -42,7 +41,7 @@
 
 	<!-- Validatie van de toegangscodes en countdown van het lockdown-systeem -->
 	<script>
-		const correctCodes = ["Phishing", "cybersecurity", "hacking"];
+		const correctCodes = ["cybersecurity", "hacking"];
 		const form = document.getElementById("access-form");
 		const fields = form.querySelectorAll("input");
 		const message = document.getElementById("form-message");
